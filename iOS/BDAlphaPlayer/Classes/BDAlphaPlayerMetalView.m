@@ -71,6 +71,34 @@
     [self play];
 }
 
+
+-(void)playWithMetalConfigurationWithDirectory:(NSString *)directory renderSuperViewFrame:(CGRect)renderSuperViewFrame contentMode:(int)contentMode{
+    if (directory.length == 0){
+        NSLog(@"directory为空");
+        return;
+    }
+    self.renderSuperViewFrame = renderSuperViewFrame;
+    
+    BDAlphaPlayerResourceModel *resourceModel = [BDAlphaPlayerResourceModel new];
+    
+    BDAlphaPlayerResourceInfo *portraitResourceInfo = [BDAlphaPlayerResourceInfo new];
+    portraitResourceInfo.contentMode = contentMode;
+    portraitResourceInfo.resourceName = [directory lastPathComponent];
+    portraitResourceInfo.resourceFilePath = directory;
+    portraitResourceInfo.resourceFileURL = [NSURL fileURLWithPath:directory];
+    resourceModel.portraitResourceInfo = portraitResourceInfo;
+    
+    resourceModel.currentOrientationResourceInfo = portraitResourceInfo;
+    
+    self.model = resourceModel;
+    
+    if (!self.model) {
+        return;
+    }
+    [self configRenderViewContentModeFromModel];
+    [self play];
+}
+
 - (NSTimeInterval)totalDurationOfPlayingEffect
 {
     if (self.output) {
